@@ -15,15 +15,15 @@ namespace Managers
 
         private void OnEnable()
         {
-            Enemy.OnEndReached += ReduceLives;
+            Enemy.Enemy.OnEndReached += ReduceLives;
         }
 
         private void OnDisable()
         {
-            Enemy.OnEndReached -= ReduceLives;
+            Enemy.Enemy.OnEndReached -= ReduceLives;
         }
 
-        private void ReduceLives()
+        private void ReduceLives(Enemy.Enemy enemy)
         {
             TotalLives--;
             if (TotalLives <= 0)
