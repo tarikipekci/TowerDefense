@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using WaypointSystem;
 
 namespace Enemy
 {
@@ -9,7 +10,7 @@ namespace Enemy
     
         [SerializeField] private float moveSpeed = 3f;
         private float MoveSpeed { get; set; }
-        public EnemyHealth EnemyHealth { get; set; }
+        public EnemyHealth EnemyHealth { get; private set; }
     
         private int _currentWaypointIndex;
         private Vector3 _lastPointPosition;

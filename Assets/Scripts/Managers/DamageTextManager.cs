@@ -1,17 +1,10 @@
-using UnityEngine;
+using WaypointSystem;
 
 namespace Managers
 {
-    public class DamageTextManager : MonoBehaviour
+    public class DamageTextManager : Singleton<DamageTextManager>
     {
-        public ObjectPooler Pooler { get; set; }
-
-        public static DamageTextManager Instance;
-
-        private void Awake()
-        {
-            Instance = this;
-        }
+        public ObjectPooler Pooler { get; private set; }
 
         private void Start()
         {
