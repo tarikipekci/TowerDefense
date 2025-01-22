@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbadd8cf84eca52428c675cfde430c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 4
+  attackRange: 3
 --- !u!114 &8791748596209772517
 MonoBehaviour:
   m_ObjectHideFlags: 0

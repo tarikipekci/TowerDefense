@@ -12,8 +12,18 @@ namespace Managers
 
         [SerializeField] private TextMeshProUGUI sellText;
         [SerializeField] private TextMeshProUGUI turretLevelText;
+        [SerializeField] private TextMeshProUGUI totalCoinsText;
+        [SerializeField] private TextMeshProUGUI lifesText;
+        [SerializeField] private TextMeshProUGUI currentWaveText;
 
         private TowerBase.TowerBase _currentTowerBaseSelected;
+
+        private void Update()
+        {
+            totalCoinsText.text = CurrencyManager.Instance.TotalCoins.ToString();
+            lifesText.text = LevelManager.Instance.TotalLives.ToString();
+            currentWaveText.text = $"Wave: {LevelManager.Instance.CurrentWave}";
+        }
 
         private void ShowTowerBaseUI()
         {
@@ -26,6 +36,7 @@ namespace Managers
         public void CloseTurretShopPanel()
         {
             turretShopPanel.SetActive(false);
+            CloseTurretInfoUI();
         }
 
         public void UpgradeTurret()
@@ -58,10 +69,22 @@ namespace Managers
             int sellAmount = _currentTowerBaseSelected.Turret.TurretUpgrade.GetSellValue();
             sellText.text = sellAmount.ToString();
         }
-        
+
         public void CloseTowerBaseUI()
         {
             towerBaseUIPanel.SetActive(false);
+            if (_currentTowerBaseSelected != null)
+            {
+                CloseTurretInfoUI();
+            }
+        }
+
+        private void CloseTurretInfoUI()
+        {
+            if (_currentTowerBaseSelected != null)
+            {
+                _currentTowerBaseSelected.CloseTurretInfo();
+            }
         }
 
         private void TowerBaseSelected(TowerBase.TowerBase towerBaseSelected)

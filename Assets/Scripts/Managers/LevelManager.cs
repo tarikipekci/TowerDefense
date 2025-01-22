@@ -1,26 +1,36 @@
 using UnityEngine;
+using WaypointSystem;
 
 namespace Managers
 {
-    public class LevelManager : MonoBehaviour
+    public class LevelManager : Singleton<LevelManager>
     {
         [SerializeField] private int lives = 10;
 
-        private int TotalLives {get; set;}
+        public int TotalLives {get; private set;}
+        public int CurrentWave {get; private set;}
 
         private void Start()
         {
             TotalLives = lives;
+            CurrentWave = 1;
         }
-
+        
+        private void WaveCompleted()
+        {
+            CurrentWave++;
+        }
+        
         private void OnEnable()
         {
             Enemy.Enemy.OnEndReached += ReduceLives;
+            Spawner.OnWaveCompleted += WaveCompleted;
         }
 
         private void OnDisable()
         {
             Enemy.Enemy.OnEndReached -= ReduceLives;
+            Spawner.OnWaveCompleted -= WaveCompleted;
         }
 
         private void ReduceLives(Enemy.Enemy enemy)

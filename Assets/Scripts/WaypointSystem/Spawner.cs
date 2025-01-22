@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using Enemy;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace WaypointSystem
 {
@@ -12,6 +14,8 @@ namespace WaypointSystem
 
     public class Spawner : MonoBehaviour
     {
+        public static Action OnWaveCompleted;
+        
         [Header("Settings")] 
         [SerializeField] private SpawnModes spawnMode = SpawnModes.Fixed;
         [SerializeField] private int enemyCount = 10;
@@ -100,10 +104,11 @@ namespace WaypointSystem
             _enemiesRemaining--;
             if (_enemiesRemaining <= 0)
             {
+                OnWaveCompleted?.Invoke();
                 StartCoroutine(NextWave());
             }
         }
-
+        
         private void OnEnable()
         {
             Enemy.Enemy.OnEndReached += RecordEnemy;

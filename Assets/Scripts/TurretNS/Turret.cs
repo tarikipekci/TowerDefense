@@ -10,6 +10,8 @@ namespace TurretNS
         public Enemy.Enemy CurrentEnemyTarget { get; private set; }
         public TurretUpgrade TurretUpgrade { get; private set; }
 
+        public float AttackRange => attackRange;
+
         private bool _gameStarted;
         private List<Enemy.Enemy> _enemies = new List<Enemy.Enemy>();
 
