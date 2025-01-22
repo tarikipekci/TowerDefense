@@ -42,7 +42,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Node
+  - name: TowerBase
     uniqueID: 2998786839
     locked: 0
   - name: Turret

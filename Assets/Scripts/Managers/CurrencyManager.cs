@@ -21,7 +21,7 @@ namespace Managers
             TotalCoins = PlayerPrefs.GetInt(CURRENCY_SAVE_KEY, coinTest);
         }
 
-        private void AddCoins(int amount)
+        public void AddCoins(int amount)
         {
             TotalCoins += amount;
             PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);

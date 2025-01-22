@@ -12,8 +12,8 @@ namespace TurretShop
         
         [SerializeField] private Image turretImage;
         [SerializeField] private TextMeshProUGUI turretCost;
-        
-        public TurretSettings TurretLoaded { get; set; }
+
+        private TurretSettings TurretLoaded { get; set; }
 
         public void SetupTurretButton(TurretSettings turretSettings)
         {

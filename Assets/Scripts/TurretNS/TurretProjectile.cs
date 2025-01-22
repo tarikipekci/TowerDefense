@@ -56,6 +56,7 @@ namespace TurretNS
             _currentProjectileLoaded.ResetProjectile();
             _currentProjectileLoaded.Damage = Damage;
             newInstance.SetActive(true);
+            _currentProjectileLoaded.GetComponent<SpriteRenderer>().enabled = false;
         }
 
         private bool IsTurretEmpty()

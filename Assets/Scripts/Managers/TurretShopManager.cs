@@ -1,4 +1,3 @@
-using Node;
 using TurretNS;
 using TurretShop;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace Managers
         [Header("Turret Settings")] [SerializeField]
         private TurretSettings[] turrets;
 
-        private TowerBase _currentTowerBaseSelected;
+        private TowerBase.TowerBase _currentTowerBaseSelected;
 
         private void Start()
         {
@@ -33,7 +32,7 @@ namespace Managers
             cardButton.SetupTurretButton(turretSettings);
         }
 
-        private void TowerBaseSelected(TowerBase towerBaseSelected)
+        private void TowerBaseSelected(TowerBase.TowerBase towerBaseSelected)
         {
            _currentTowerBaseSelected = towerBaseSelected;
         }
@@ -51,17 +50,25 @@ namespace Managers
                 _currentTowerBaseSelected.GetComponent<SpriteRenderer>().enabled = false;
             }
         }
+
+        private void TurretSold()
+        {
+            _currentTowerBaseSelected.GetComponent<SpriteRenderer>().enabled = true;
+            _currentTowerBaseSelected = null;
+        }
         
         private void OnEnable()
         {
-            TowerBase.OnBaseSelected += TowerBaseSelected;
+            TowerBase.TowerBase.OnBaseSelected += TowerBaseSelected;
             TurretCard.OnPlaceTurret += PlaceTurret;
+            TowerBase.TowerBase.OnTurretSold += TurretSold;
         }
 
         private void OnDisable()
         {
-            TowerBase.OnBaseSelected -= TowerBaseSelected;
+            TowerBase.TowerBase.OnBaseSelected -= TowerBaseSelected;
             TurretCard.OnPlaceTurret -= PlaceTurret;
+            TowerBase.TowerBase.OnTurretSold -= TurretSold;
         }
     }
 }

@@ -1,13 +1,15 @@
 using System;
+using Managers;
 using TurretNS;
 using UnityEngine;
 
-namespace Node
+namespace TowerBase
 {
     public class TowerBase : MonoBehaviour
     {
         public static Action<TowerBase> OnBaseSelected;
-        public Turret Turret { get; set; }
+        public static Action OnTurretSold;
+        public Turret Turret { get; private set; }
 
         public void SetTurret(Turret turret)
         {
@@ -22,6 +24,17 @@ namespace Node
         public void SelectTurret()
         {
             OnBaseSelected?.Invoke(this);
+        }
+
+        public void SellTurret()
+        {
+            if (!IsEmpty())
+            {
+                CurrencyManager.Instance.AddCoins(Turret.TurretUpgrade.UpgradeCost);
+                Destroy(Turret.gameObject);
+                Turret = null;
+                OnTurretSold?.Invoke();
+            }
         }
     }
 }
