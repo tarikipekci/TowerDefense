@@ -62,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 9177891463717278379}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.67, y: 1.58, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -166,6 +166,7 @@ MonoBehaviour:
   projectileSpawnPosition: {fileID: 4885511189446087779}
   delayBtwAttacks: 1
   damage: 2
+  projectilePrefab: {fileID: 1153178462053584660, guid: 0cde3b2be22e7674f928f81d18a2c051, type: 3}
 --- !u!114 &8719981084221597714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,8 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818393a5ef28edc4dbeb8c8e8072c58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1153178462053584660, guid: 0cde3b2be22e7674f928f81d18a2c051, type: 3}
-  poolSize: 20
+  pooledObjects:
+  - prefab: {fileID: 1153178462053584660, guid: 0cde3b2be22e7674f928f81d18a2c051, type: 3}
+    count: 20
 --- !u!58 &8067999962248837473
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -214,4 +216,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 3

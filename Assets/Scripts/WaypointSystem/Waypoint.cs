@@ -1,40 +1,43 @@
 using UnityEngine;
 
-public class Waypoint : MonoBehaviour
+namespace WaypointSystem
 {
-    [SerializeField] private Vector3[] points;
-    public Vector3[] Points => points;
-    public Vector3 CurrentPosition { get; private set; }
-
-    private bool _gameStarted;
-
-    private void Start()
+    public class Waypoint : MonoBehaviour
     {
-        _gameStarted = true;
-        CurrentPosition = transform.position;
-    }
+        [SerializeField] private Vector3[] points;
+        public Vector3[] Points => points;
+        public Vector3 CurrentPosition { get; private set; }
 
-    public Vector3 GetWaypointPosition(int index)
-    {
-        return CurrentPosition + Points[index];
-    }
+        private bool _gameStarted;
 
-    private void OnDrawGizmos()
-    {
-        if (!_gameStarted && transform.hasChanged)
+        private void Start()
         {
+            _gameStarted = true;
             CurrentPosition = transform.position;
         }
 
-        for (int i = 0; i < points.Length; i++)
+        public Vector3 GetWaypointPosition(int index)
         {
-            Gizmos.color = Color.black;
-            Gizmos.DrawWireSphere(points[i] + CurrentPosition, 0.5f);
+            return CurrentPosition + Points[index];
+        }
 
-            if (i < points.Length - 1)
+        private void OnDrawGizmos()
+        {
+            if (!_gameStarted && transform.hasChanged)
             {
-                Gizmos.color = Color.gray;
-                Gizmos.DrawLine(points[i] + CurrentPosition, points[i + 1] + CurrentPosition);
+                CurrentPosition = transform.position;
+            }
+
+            for (int i = 0; i < points.Length; i++)
+            {
+                Gizmos.color = Color.black;
+                Gizmos.DrawWireSphere(points[i] + CurrentPosition, 0.5f);
+
+                if (i < points.Length - 1)
+                {
+                    Gizmos.color = Color.gray;
+                    Gizmos.DrawLine(points[i] + CurrentPosition, points[i + 1] + CurrentPosition);
+                }
             }
         }
     }

@@ -199,6 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textDamageSpawnPosition: {fileID: 6009292755571761274}
+  textDamagePrefab: {fileID: 9104821924134882713, guid: 76d691ff30ab3ed43bc1342e359739e0, type: 3}
 --- !u!61 &2657621361235150026
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -235,7 +236,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.4, y: 0.4}
+    oldSize: {x: 0.625, y: 0.625}
     newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

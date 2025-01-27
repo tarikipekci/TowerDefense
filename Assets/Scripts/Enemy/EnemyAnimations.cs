@@ -1,6 +1,6 @@
 using System.Collections;
+using SpawnSystem;
 using UnityEngine;
-using WaypointSystem;
 
 namespace Enemy
 {

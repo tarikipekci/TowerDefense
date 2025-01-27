@@ -89,6 +89,9 @@ namespace Managers
 
         private void TowerBaseSelected(TowerBase.TowerBase towerBaseSelected)
         {
+            CloseTurretShopPanel();
+            CloseTurretInfoUI();
+            CloseTowerBaseUI();
             _currentTowerBaseSelected = towerBaseSelected;
 
             if (Camera.main != null)

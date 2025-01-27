@@ -1,6 +1,6 @@
+using SpawnSystem;
 using TMPro;
 using UnityEngine;
-using WaypointSystem;
 
 public class DamageText : MonoBehaviour
 {

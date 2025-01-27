@@ -1,5 +1,5 @@
+using SpawnSystem;
 using UnityEngine;
-using WaypointSystem;
 
 namespace Managers
 {
@@ -10,7 +10,7 @@ namespace Managers
         public int TotalLives {get; private set;}
         public int CurrentWave {get; private set;}
 
-        private void Start()
+        private void Awake()
         {
             TotalLives = lives;
             CurrentWave = 1;

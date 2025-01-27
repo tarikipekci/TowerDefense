@@ -1,7 +1,7 @@
 using System;
+using SpawnSystem;
 using TurretNS;
 using UnityEngine;
-using WaypointSystem;
 
 public class Projectile : MonoBehaviour
 {

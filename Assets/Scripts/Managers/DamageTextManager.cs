@@ -1,4 +1,4 @@
-using WaypointSystem;
+using SpawnSystem;
 
 namespace Managers
 {

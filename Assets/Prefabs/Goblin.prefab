@@ -64,7 +64,7 @@ Transform:
   m_GameObject: {fileID: 7896864152761072850}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -2.09, y: 0.27, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -183,6 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textDamageSpawnPosition: {fileID: 1807524748861085427}
+  textDamagePrefab: {fileID: 9104821924134882713, guid: 76d691ff30ab3ed43bc1342e359739e0, type: 3}
 --- !u!114 &3208054622987020450
 MonoBehaviour:
   m_ObjectHideFlags: 0

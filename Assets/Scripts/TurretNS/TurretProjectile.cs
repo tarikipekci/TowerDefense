@@ -1,5 +1,5 @@
+using SpawnSystem;
 using UnityEngine;
-using WaypointSystem;
 
 namespace TurretNS
 {
@@ -8,6 +8,7 @@ namespace TurretNS
         [SerializeField] protected Transform projectileSpawnPosition;
         [SerializeField] protected float delayBtwAttacks = 1f;
         [SerializeField] protected float damage = 2f;
+        [SerializeField] protected GameObject projectilePrefab;
         
         public float Damage { get; set; }
         public float DelayPerShot { get; set; }
@@ -48,7 +49,7 @@ namespace TurretNS
 
         private void LoadProjectile()
         {
-            GameObject newInstance = _pooler.GetInstanceFromPool();
+            GameObject newInstance = _pooler.GetInstanceFromPool(projectilePrefab);
             newInstance.transform.localPosition = projectileSpawnPosition.position;
             newInstance.transform.SetParent(projectileSpawnPosition);
             _currentProjectileLoaded = newInstance.GetComponent<Projectile>();

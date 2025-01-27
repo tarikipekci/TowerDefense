@@ -7,6 +7,7 @@ namespace Enemy
     public class EnemyFX : MonoBehaviour
     {
         [SerializeField] private Transform textDamageSpawnPosition;
+        [SerializeField] private GameObject textDamagePrefab;
 
         private Enemy _enemy;
 
@@ -19,7 +20,7 @@ namespace Enemy
         {
             if (_enemy == enemy)
             {
-                GameObject newInstance = DamageTextManager.Instance.Pooler.GetInstanceFromPool();
+                GameObject newInstance = DamageTextManager.Instance.Pooler.GetInstanceFromPool(textDamagePrefab);
                 TextMeshProUGUI damageText = newInstance.GetComponent<DamageText>().DmgText;
                 damageText.text = damage.ToString();
                 
