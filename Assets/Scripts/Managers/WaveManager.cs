@@ -14,7 +14,6 @@ namespace Managers
     [Serializable]
     public struct Wave
     {
-        public int waveCounter;
         public List<WaveInfo> waveInfo; 
     }
 

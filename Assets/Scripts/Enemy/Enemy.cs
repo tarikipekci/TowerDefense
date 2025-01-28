@@ -12,6 +12,8 @@ namespace Enemy
         [SerializeField] private float moveSpeed = 3f;
         private float MoveSpeed { get; set; }
         public EnemyHealth EnemyHealth { get; private set; }
+        
+        public bool IsDefeated { get; private set; }
     
         private int _currentWaypointIndex;
         private Vector3 _lastPointPosition;
@@ -106,6 +108,13 @@ namespace Enemy
         public void ResetEnemy()
         {
             _currentWaypointIndex = 0;
+            IsDefeated = false; 
+        }
+        
+        public void MarkAsDefeated()
+        {
+            if (IsDefeated) return;
+            IsDefeated = true;
         }
     }
 }

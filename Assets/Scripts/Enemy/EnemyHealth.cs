@@ -11,8 +11,7 @@ namespace Enemy
 
         [SerializeField] private GameObject healthBarPrefab;
         [SerializeField] private Transform barPosition;
-        [SerializeField] private float initialHealth = 10f;
-        [SerializeField] private float maxHealth = 10f;
+        [SerializeField] private float maxHealth;
 
         public float CurrentHealth { get; private set; }
     
@@ -22,7 +21,7 @@ namespace Enemy
         private void Start()
         {
             CreateHealthBar();
-            CurrentHealth = initialHealth;
+            CurrentHealth = maxHealth;
             _enemy = GetComponent<Enemy>();
         }
 
@@ -60,7 +59,7 @@ namespace Enemy
 
         public void ResetHealth()
         {
-            CurrentHealth = initialHealth;
+            CurrentHealth = maxHealth;
             _healthBar.fillAmount = 1f;
         }
     }

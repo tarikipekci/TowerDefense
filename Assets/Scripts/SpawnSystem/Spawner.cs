@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace SpawnSystem
 {
-    public enum SpawnModes
+    public enum SpawnMode
     {
         Fixed,
         Random
@@ -18,141 +18,180 @@ namespace SpawnSystem
     {
         public static Action OnWaveCompleted;
 
-        [Header("Settings")] [SerializeField] private SpawnModes spawnMode = SpawnModes.Fixed;
-        [SerializeField] private float delayBtwWaves = 2f;
+        [Header("Spawn Settings")]
+        [SerializeField] private SpawnMode spawnMode = SpawnMode.Fixed;
+        [SerializeField] private float delayBetweenWaves = 2f;
 
-        [Header("Fixed Delay")] [SerializeField]
-        private float delayBtwSpawns;
+        [Header("Fixed Delay")]
+        [SerializeField] private float fixedSpawnDelay = 1f;
 
-        [Header("Random Delay")] [SerializeField]
-        private float minRandomDelay;
-
-        [SerializeField] private float maxRandomDelay;
+        [Header("Random Delay")]
+        [SerializeField] private float minRandomDelay = 0.5f;
+        [SerializeField] private float maxRandomDelay = 2f;
 
         private float _spawnTimer;
         private int _enemiesSpawned;
         private int _enemiesRemaining;
-        private int _waveInfoCount;
+        private int _currentWaveIndex;
         private int _currentWaveInfoIndex;
-        private int _enemyCount;
+        private int _totalEnemiesInWaveInfo;
 
         private ObjectPooler _pooler;
         private Waypoint _waypoint;
+        private bool _isWaveCompleted;
 
         private void Start()
         {
+            InitializeComponents();
+            InitializeWave();
+        }
+
+        private void InitializeComponents()
+        {
             _pooler = GetComponent<ObjectPooler>();
             _waypoint = GetComponentInParent<Waypoint>();
-            _waveInfoCount = WaveManager.Instance.waves[LevelManager.Instance.CurrentWave - 1].waveInfo.Count;
-            _enemiesRemaining = WaveManager.Instance.waves[LevelManager.Instance.CurrentWave - 1]
-                .waveInfo[_currentWaveInfoIndex].count;
-            _enemyCount = _enemiesRemaining;
+
+            if (_pooler == null || _waypoint == null)
+            {
+                Debug.LogError("Required components are missing!");
+                enabled = false;
+            }
+        }
+
+        private void InitializeWave()
+        {
+            _currentWaveIndex = LevelManager.Instance.CurrentWave - 1;
+            _currentWaveInfoIndex = 0;
+            UpdateWaveInfo();
+            _spawnTimer = GetSpawnDelay();
         }
 
         private void Update()
         {
+            if (_enemiesSpawned >= _totalEnemiesInWaveInfo) return;
+
             _spawnTimer -= Time.deltaTime;
 
             if (_spawnTimer <= 0)
             {
                 _spawnTimer = GetSpawnDelay();
-                if (_enemiesSpawned < _enemyCount)
-                {
-                    _enemiesSpawned++;
-                    SpawnEnemy();
-                }
+                SpawnEnemy();
             }
         }
-        
+
         private void SpawnEnemy()
         {
-            var currentWaveCounter = LevelManager.Instance.CurrentWave;
-            var currentWave = WaveManager.Instance.waves[currentWaveCounter - 1];
-            var currentWaveInfo = currentWave.waveInfo;
-            GameObject newInstance = _pooler.GetInstanceFromPool(currentWaveInfo[_currentWaveInfoIndex].enemyPrefab);
-            Enemy.Enemy enemy = newInstance.GetComponent<Enemy.Enemy>();
+            var currentWave = WaveManager.Instance.waves[_currentWaveIndex];
+            var enemyPrefab = currentWave.waveInfo[_currentWaveInfoIndex].enemyPrefab;
+
+            GameObject enemyInstance = _pooler.GetInstanceFromPool(enemyPrefab);
+            if (enemyInstance == null)
+            {
+                Debug.LogWarning("Enemy instance could not be retrieved from the pool!");
+                return;
+            }
+
+            Enemy.Enemy enemy = enemyInstance.GetComponent<Enemy.Enemy>();
+            if (enemy == null)
+            {
+                Debug.LogWarning("Enemy component is missing on the spawned object!");
+                return;
+            }
+
             enemy.Waypoint = _waypoint;
             enemy.ResetEnemy();
+            enemy.transform.position = _waypoint.Points[0];
+            enemyInstance.SetActive(true);
 
-            enemy.transform.position = enemy.Waypoint.Points[0];
-            newInstance.SetActive(true);
+            _enemiesSpawned++;
+            Debug.Log($"Enemy Spawned: {enemy.name}, Enemies Spawned: {_enemiesSpawned}");
         }
 
         private float GetSpawnDelay()
         {
-            float delay = 0f;
-
-            if (spawnMode == SpawnModes.Fixed)
-            {
-                delay = delayBtwSpawns;
-            }
-            else
-            {
-                delay = GetRandomDelay();
-            }
-
-            return delay;
+            return spawnMode == SpawnMode.Fixed ? fixedSpawnDelay : Random.Range(minRandomDelay, maxRandomDelay);
         }
 
-        private float GetRandomDelay()
+        private void HandleEnemyDefeated(Enemy.Enemy defeatedEnemy)
         {
-            float randomTimer = Random.Range(minRandomDelay, maxRandomDelay);
-            return randomTimer;
-        }
+            if (defeatedEnemy.IsDefeated) return;
 
-        private IEnumerator NextWaveInfo(bool isWaveFinished)
-        {
-            yield return new WaitForSeconds(delayBtwWaves);
+            defeatedEnemy.MarkAsDefeated();
             
-            if (isWaveFinished)
-            {
-                OnWaveCompleted?.Invoke();
-                _currentWaveInfoIndex = 0;
-                ResetWaveInfo();
-            }
-            else
-            {
-                _currentWaveInfoIndex++;
-                ResetWaveInfo();
-            }
-        }
-
-        private void ResetWaveInfo()
-        {
-            _spawnTimer = 0f;
-            _enemiesSpawned = 0;
-            _enemiesRemaining = WaveManager.Instance.waves[LevelManager.Instance.CurrentWave - 1]
-                .waveInfo[_currentWaveInfoIndex].count;
-            _waveInfoCount = WaveManager.Instance.waves[LevelManager.Instance.CurrentWave - 1].waveInfo.Count;
-            _enemyCount = _enemiesRemaining;
-        }
-        
-        private void RecordEnemy(Enemy.Enemy enemy)
-        {
             _enemiesRemaining--;
-            if (_enemiesRemaining <= 0)
+            Debug.Log($"Enemy Defeated: {defeatedEnemy.name}, Enemies Remaining: {_enemiesRemaining}");
+
+            if (_enemiesRemaining <= 0 && _enemiesSpawned >= _totalEnemiesInWaveInfo)
             {
-                if (_currentWaveInfoIndex < _waveInfoCount - 1)
+                if (_currentWaveInfoIndex < WaveManager.Instance.waves[_currentWaveIndex].waveInfo.Count - 1)
                 {
-                    StartCoroutine(NextWaveInfo(false));   
+                    Debug.Log("Preparing Next Wave Info...");
+                    StartCoroutine(PrepareNextWaveInfo());
                 }
                 else
                 {
-                    StartCoroutine(NextWaveInfo(true));
+                    Debug.Log("Completing Wave...");
+                    StartCoroutine(CompleteWave());
                 }
             }
+        }
+
+        private void UpdateWaveInfo()
+        {
+            var currentWave = WaveManager.Instance.waves[_currentWaveIndex];
+            _totalEnemiesInWaveInfo = currentWave.waveInfo[_currentWaveInfoIndex].count;
+            _enemiesRemaining = _totalEnemiesInWaveInfo;
+            _enemiesSpawned = 0;
+            _spawnTimer = 0f;
+
+            Debug.Log($"Wave Info Updated: Wave {_currentWaveIndex + 1}, Wave Info {_currentWaveInfoIndex + 1}, " +
+                      $"Total Enemies: {_totalEnemiesInWaveInfo}, Enemies Remaining: {_enemiesRemaining}");
+        }
+
+        private IEnumerator PrepareNextWaveInfo()
+        {
+            yield return new WaitForSeconds(delayBetweenWaves);
+
+            if (_currentWaveInfoIndex < WaveManager.Instance.waves[_currentWaveIndex].waveInfo.Count - 1)
+            {
+                _currentWaveInfoIndex++;
+                Debug.Log($"Preparing Next Wave Info: Current Wave Info Index: {_currentWaveInfoIndex}");
+            }
+
+            UpdateWaveInfo();
+        }
+
+        private IEnumerator CompleteWave()
+        {
+            if (_isWaveCompleted) yield break;
+
+            _isWaveCompleted = true;
+            yield return new WaitForSeconds(delayBetweenWaves);
+
+            if (_currentWaveInfoIndex >= WaveManager.Instance.waves[_currentWaveIndex].waveInfo.Count - 1)
+            {
+                _currentWaveIndex++;
+                _currentWaveInfoIndex = 0;
+                Debug.Log($"Wave Completed. Moving to Wave: {_currentWaveIndex + 1}");
+            }
+
+            OnWaveCompleted?.Invoke();
+            UpdateWaveInfo();
+            _isWaveCompleted = false;
         }
 
         private void OnEnable()
         {
-            Enemy.Enemy.OnEndReached += RecordEnemy;
-            EnemyHealth.OnEnemyKilled += RecordEnemy;
+            Enemy.Enemy.OnEndReached += HandleEnemyDefeated;
+            EnemyHealth.OnEnemyKilled += HandleEnemyDefeated;
+            Debug.Log("Event Subscriptions Enabled");
         }
 
         private void OnDisable()
         {
-            Enemy.Enemy.OnEndReached -= RecordEnemy;
-            EnemyHealth.OnEnemyKilled -= RecordEnemy;
+            Enemy.Enemy.OnEndReached -= HandleEnemyDefeated;
+            EnemyHealth.OnEnemyKilled -= HandleEnemyDefeated;
+            Debug.Log("Event Subscriptions Disabled");
         }
     }
 }

@@ -809,16 +809,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - waveCounter: 1
-    waveInfo:
+  - waveInfo:
     - enemyPrefab: {fileID: 5821975576200826593, guid: f4d6e6cbddee8434aa73bc814c71ab16, type: 3}
       count: 10
-  - waveCounter: 2
-    waveInfo:
+  - waveInfo:
     - enemyPrefab: {fileID: 5821975576200826593, guid: f4d6e6cbddee8434aa73bc814c71ab16, type: 3}
       count: 20
     - enemyPrefab: {fileID: 7896864152761072850, guid: 45735cea327be174b9e348590f3de604, type: 3}
       count: 15
+  - waveInfo:
+    - enemyPrefab: {fileID: 7896864152761072850, guid: 2496a3e61e267d9418c784720ceaead1, type: 3}
+      count: 25
 --- !u!1 &246034150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,8 +1373,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnMode: 0
-  delayBtwWaves: 2
-  delayBtwSpawns: 1
+  delayBetweenWaves: 2
+  fixedSpawnDelay: 1
   minRandomDelay: 1
   maxRandomDelay: 3
 --- !u!114 &464569527
@@ -1392,6 +1393,8 @@ MonoBehaviour:
   - prefab: {fileID: 5821975576200826593, guid: f4d6e6cbddee8434aa73bc814c71ab16, type: 3}
     count: 25
   - prefab: {fileID: 7896864152761072850, guid: 45735cea327be174b9e348590f3de604, type: 3}
+    count: 25
+  - prefab: {fileID: 7896864152761072850, guid: 2496a3e61e267d9418c784720ceaead1, type: 3}
     count: 25
 --- !u!1 &519420028
 GameObject:
@@ -1633,7 +1636,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.53125, y: 0.703125, z: 0}
   m_MaxChunkCount: 16
@@ -2201,16 +2204,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -16, y: -2, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 2
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   - first: {x: -13, y: -2, z: 0}
     second:
       serializedVersion: 2
@@ -2326,6 +2319,16 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 3
       m_TileSpriteIndex: 3
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: -16, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -13349,7 +13352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb5421d8bef99b4a9b72a7edf5f584f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinTest: 500
+  coinTest: 1000
 --- !u!1 &1617120092
 GameObject:
   m_ObjectHideFlags: 0
