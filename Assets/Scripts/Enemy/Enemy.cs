@@ -20,6 +20,7 @@ namespace Enemy
     
         private EnemyHealth _enemyHealth;
         private SpriteRenderer _spriteRenderer;
+        private Rigidbody2D _rigidbody2D;
 
         public Waypoint Waypoint { get; set; }
         private Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(_currentWaypointIndex);
@@ -30,12 +31,13 @@ namespace Enemy
             Waypoint = FindObjectOfType<Waypoint>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             EnemyHealth = GetComponent<EnemyHealth>();
+            _rigidbody2D = GetComponent<Rigidbody2D>();
             _currentWaypointIndex = 0;
             MoveSpeed = moveSpeed;
             _lastPointPosition = transform.position;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             Move();
             Rotate();
@@ -48,7 +50,8 @@ namespace Enemy
 
         private void Move()
         {
-            transform.position = Vector3.MoveTowards(transform.position, CurrentPointPosition, MoveSpeed * Time.deltaTime);
+            Vector3 direction = (CurrentPointPosition - transform.position).normalized;
+            _rigidbody2D.velocity = direction * MoveSpeed;
         }
 
         public void StopMovement()
@@ -63,6 +66,7 @@ namespace Enemy
 
         private void Rotate()
         {
+            // Horizontal Left-Right
             if (CurrentPointPosition.x > _lastPointPosition.x)
             {
                 _spriteRenderer.flipX = false;
@@ -115,6 +119,11 @@ namespace Enemy
         {
             if (IsDefeated) return;
             IsDefeated = true;
+        }
+
+        public Rigidbody2D GetRigidbody2D()
+        {
+            return _rigidbody2D;
         }
     }
 }

@@ -820,6 +820,16 @@ MonoBehaviour:
   - waveInfo:
     - enemyPrefab: {fileID: 7896864152761072850, guid: 2496a3e61e267d9418c784720ceaead1, type: 3}
       count: 25
+  - waveInfo:
+    - enemyPrefab: {fileID: 5821975576200826593, guid: f4d6e6cbddee8434aa73bc814c71ab16, type: 3}
+      count: 20
+    - enemyPrefab: {fileID: 7896864152761072850, guid: 2496a3e61e267d9418c784720ceaead1, type: 3}
+      count: 30
+    - enemyPrefab: {fileID: 7896864152761072850, guid: 45735cea327be174b9e348590f3de604, type: 3}
+      count: 30
+  - waveInfo:
+    - enemyPrefab: {fileID: 3432227672497688612, guid: 99690c2ccf435584da04ed1027d21cc5, type: 3}
+      count: 40
 --- !u!1 &246034150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1396,6 +1406,8 @@ MonoBehaviour:
     count: 25
   - prefab: {fileID: 7896864152761072850, guid: 2496a3e61e267d9418c784720ceaead1, type: 3}
     count: 25
+  - prefab: {fileID: 3432227672497688612, guid: 99690c2ccf435584da04ed1027d21cc5, type: 3}
+    count: 30
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -13352,7 +13364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb5421d8bef99b4a9b72a7edf5f584f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinTest: 1000
+  coinTest: 850
 --- !u!1 &1617120092
 GameObject:
   m_ObjectHideFlags: 0
