@@ -5,7 +5,7 @@ namespace TurretNS
 {
     public class Turret : MonoBehaviour
     {
-        [SerializeField] private float attackRange = 3f;
+        [SerializeField] private float attackRange;
 
         public Enemy.Enemy CurrentEnemyTarget { get; private set; }
         public TurretUpgrade TurretUpgrade { get; private set; }
@@ -35,15 +35,15 @@ namespace TurretNS
                 return;
             }
             
-            _enemies.Sort((Enemy1, Enemy2) =>
+            _enemies.Sort((enemy1, enemy2) =>
             {
-                if (Enemy1.CurrentPointPosition == Enemy2.CurrentPointPosition)
-                {
-                    return Vector3.Distance(transform.position, Enemy1.CurrentPointPosition)
-                        .CompareTo(Vector3.Distance(transform.position, Enemy2.CurrentPointPosition));
-                }
+                if (enemy1.SplineContainer == null || enemy2.SplineContainer == null)
+                    return 0;
 
-                return 0;
+                float progress1 = enemy1.GetSplineProgress();
+                float progress2 = enemy2.GetSplineProgress();
+
+                return progress2.CompareTo(progress1);
             });
 
             CurrentEnemyTarget = _enemies[0];

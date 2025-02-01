@@ -42,7 +42,9 @@ namespace Managers
             if (_currentTowerBaseSelected != null)
             {
                 GameObject turretInstance = Instantiate(turretLoaded.turretPrefab);
-                turretInstance.transform.localPosition = _currentTowerBaseSelected.transform.position;
+                var currentTowerBasePos = _currentTowerBaseSelected.transform.position;
+                var turretPos = new Vector3(currentTowerBasePos.x, currentTowerBasePos.y + 1, currentTowerBasePos.z);
+                turretInstance.transform.position = turretPos;
                 turretInstance.transform.parent = _currentTowerBaseSelected.transform;
 
                 Turret turretPlaced = turretInstance.GetComponent<Turret>();

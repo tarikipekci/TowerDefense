@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using WaypointSystem;
+using UnityEngine.Splines;
 
 namespace Managers
 {
@@ -10,7 +10,7 @@ namespace Managers
     {
         public GameObject enemyPrefab; 
         public int count;
-        public Waypoint waypoint;
+        public SplineContainer splineContainer;
     }
 
     [Serializable]

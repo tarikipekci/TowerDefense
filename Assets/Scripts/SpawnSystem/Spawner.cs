@@ -79,9 +79,9 @@ namespace SpawnSystem
         private void SpawnEnemy()
         {
             var currentWave = WaveManager.Instance.waves[_currentWaveIndex];
-            var enemyPrefab = currentWave.waveInfo[_currentWaveInfoIndex].enemyPrefab;
+            var waveInfo = currentWave.waveInfo[_currentWaveInfoIndex];
 
-            GameObject enemyInstance = _pooler.GetInstanceFromPool(enemyPrefab);
+            GameObject enemyInstance = _pooler.GetInstanceFromPool(waveInfo.enemyPrefab);
             if (enemyInstance == null)
             {
                 Debug.LogWarning("Enemy instance could not be retrieved from the pool!");
@@ -95,12 +95,21 @@ namespace SpawnSystem
                 return;
             }
 
-            enemy.Waypoint = WaveManager.Instance.waves[_currentWaveIndex].waveInfo[_currentWaveInfoIndex].waypoint;
+            enemy.SplineContainer = waveInfo.splineContainer;
             enemy.ResetEnemy();
-            enemy.transform.position = enemy.Waypoint.Points[0];
-            enemyInstance.SetActive(true);
 
+            if (waveInfo.splineContainer != null)
+            {
+                enemy.transform.position = waveInfo.splineContainer.EvaluatePosition(0f);
+            }
+            else
+            {
+                Debug.LogWarning("SplineContainer is missing for this wave!");
+            }
+
+            enemyInstance.SetActive(true);
             _enemiesSpawned++;
+
             Debug.Log($"Enemy Spawned: {enemy.name}, Enemies Spawned: {_enemiesSpawned}");
         }
 
