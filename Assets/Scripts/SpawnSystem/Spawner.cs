@@ -3,7 +3,6 @@ using System.Collections;
 using Enemy;
 using Managers;
 using UnityEngine;
-using WaypointSystem;
 using Random = UnityEngine.Random;
 
 namespace SpawnSystem
@@ -37,7 +36,6 @@ namespace SpawnSystem
         private int _totalEnemiesInWaveInfo;
 
         private ObjectPooler _pooler;
-        private Waypoint _waypoint;
         private bool _isWaveCompleted;
 
         private void Start()
@@ -49,11 +47,10 @@ namespace SpawnSystem
         private void InitializeComponents()
         {
             _pooler = GetComponent<ObjectPooler>();
-            _waypoint = GetComponentInParent<Waypoint>();
 
-            if (_pooler == null || _waypoint == null)
+            if (_pooler == null)
             {
-                Debug.LogError("Required components are missing!");
+                Debug.LogError("Required component is missing!");
                 enabled = false;
             }
         }
@@ -98,9 +95,9 @@ namespace SpawnSystem
                 return;
             }
 
-            enemy.Waypoint = _waypoint;
+            enemy.Waypoint = WaveManager.Instance.waves[_currentWaveIndex].waveInfo[_currentWaveInfoIndex].waypoint;
             enemy.ResetEnemy();
-            enemy.transform.position = _waypoint.Points[0];
+            enemy.transform.position = enemy.Waypoint.Points[0];
             enemyInstance.SetActive(true);
 
             _enemiesSpawned++;

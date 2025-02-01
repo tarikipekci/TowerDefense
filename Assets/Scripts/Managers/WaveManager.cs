@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using WaypointSystem;
 
 namespace Managers
 {
@@ -8,7 +9,8 @@ namespace Managers
     public struct WaveInfo
     {
         public GameObject enemyPrefab; 
-        public int count;          
+        public int count;
+        public Waypoint waypoint;
     }
 
     [Serializable]

@@ -23,12 +23,11 @@ namespace Enemy
         private Rigidbody2D _rigidbody2D;
 
         public Waypoint Waypoint { get; set; }
-        private Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(_currentWaypointIndex);
+        public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(_currentWaypointIndex);
 
         private void Start()
         {
             _enemyHealth = GetComponent<EnemyHealth>();
-            Waypoint = FindObjectOfType<Waypoint>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             EnemyHealth = GetComponent<EnemyHealth>();
             _rigidbody2D = GetComponent<Rigidbody2D>();

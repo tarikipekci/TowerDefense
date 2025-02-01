@@ -50,7 +50,7 @@ namespace TurretNS
         private void LoadProjectile()
         {
             GameObject newInstance = _pooler.GetInstanceFromPool(projectilePrefab);
-            newInstance.transform.localPosition = projectileSpawnPosition.position;
+            newInstance.transform.position = projectileSpawnPosition.position;
             newInstance.transform.SetParent(projectileSpawnPosition);
             _currentProjectileLoaded = newInstance.GetComponent<Projectile>();
             _currentProjectileLoaded.TurretOwner = this;

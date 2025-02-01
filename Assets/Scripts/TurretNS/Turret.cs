@@ -6,7 +6,7 @@ namespace TurretNS
     public class Turret : MonoBehaviour
     {
         [SerializeField] private float attackRange = 3f;
-    
+
         public Enemy.Enemy CurrentEnemyTarget { get; private set; }
         public TurretUpgrade TurretUpgrade { get; private set; }
 
@@ -19,26 +19,36 @@ namespace TurretNS
         {
             _gameStarted = true;
             _enemies = new List<Enemy.Enemy>();
-
             TurretUpgrade = GetComponent<TurretUpgrade>();
         }
 
         private void Update()
         {
-            GetCurrentEnemyTarget();
+            UpdateCurrentEnemyTarget();
         }
-    
-        private void GetCurrentEnemyTarget()
+
+        private void UpdateCurrentEnemyTarget()
         {
             if (_enemies.Count <= 0)
             {
                 CurrentEnemyTarget = null;
                 return;
             }
-        
+            
+            _enemies.Sort((Enemy1, Enemy2) =>
+            {
+                if (Enemy1.CurrentPointPosition == Enemy2.CurrentPointPosition)
+                {
+                    return Vector3.Distance(transform.position, Enemy1.CurrentPointPosition)
+                        .CompareTo(Vector3.Distance(transform.position, Enemy2.CurrentPointPosition));
+                }
+
+                return 0;
+            });
+
             CurrentEnemyTarget = _enemies[0];
         }
-
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Enemy"))
@@ -66,7 +76,7 @@ namespace TurretNS
             {
                 GetComponent<CircleCollider2D>().radius = attackRange;
             }
-        
+
             Gizmos.DrawWireSphere(transform.position, attackRange);
         }
     }
